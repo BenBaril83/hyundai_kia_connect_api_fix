@@ -113,9 +113,9 @@ class KiaUvoApiCA(ApiImpl):
         self.old_vehicle_status = {}
         self.API_URL: str = "https://" + self.BASE_URL + "/tods/api/"
         self.API_HEADERS = {
-            "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
             "Accept": "application/json, text/plain, */*",
-            "Accept-Language": "en-CA,en-US;q=0.8,en;q=0.5,fr;q=0.3",
+            "Accept-Language": "en-US;q=0.9,",
             "Accept-Encoding": "gzip, deflate, br, zstd",
             "Content-Type": "application/json;charset=UTF-8",
             "from": "CWP",
@@ -124,14 +124,18 @@ class KiaUvoApiCA(ApiImpl):
             "Origin": f"https://{self.BASE_URL}",
             "Connection": "keep-alive",
             "Referer": f"https://{self.BASE_URL}/login",
+            "Sec-Ch-Ua": "Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"
+            "Sec-Ch-Ua-Mobile": "?0"
+            "Sec-Ch-Ua-Platform": "Windows"
             "Sec-Fetch-Dest": "empty",
             "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Site": "same-origin",
             "Priority": "u=0",
             "Pragma": "no-cache",
             "Cache-Control": "no-cache",
-            "client_id": "HATAHSPACA0232141ED9722C67715A0B",
-            "client_secret": "CLISCR01AHSPA",
+            "Deviceid": "TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzE0My4wLjAuMCBTYWZhcmkvNTM3LjM2K1dpbjMyKzM4NDArMTYwMA=="
+#            "client_id": "HATAHSPACA0232141ED9722C67715A0B",
+#            "client_secret": "CLISCR01AHSPA",
         }
         self._sessions = None
 
@@ -187,8 +191,8 @@ class KiaUvoApiCA(ApiImpl):
         base_device_id = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36"
         # Append a random UUID to make it unique per session
         unique_device_id = f"{base_device_id}+{str(uuid.uuid4())}"
-
-        headers["Deviceid"] = base64.b64encode(unique_device_id.encode()).decode()
+        _LOGGER.debug(f"{DOMAIN} - Sign in request {headers}")
+ #       headers["Deviceid"] = base64.b64encode(unique_device_id.encode()).decode()
         response = self.sessions.post(url, json=data, headers=headers)
         _LOGGER.debug(f"{DOMAIN} - Sign In Response {response.text}")
         response = response.json()
